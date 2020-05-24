@@ -1,0 +1,25 @@
+﻿{
+  "Image": {
+    "Compression": {
+      "Enabled": true,
+      "Level": 70
+    },
+    "Resize": {
+      "Enabled": true,
+      "Percentage": 0.3
+    }
+  },
+  "WaterMark": {
+    "Font": {
+      "HeightSizePercentage": 0.025,
+      "HeightPositionPercentage": 0.97,
+      "WidthPositionPercentage": 0.0143
+    },
+    "Color": {
+      "A": 158,
+      "R": 255,
+      "G": 255,
+      "B": 255
+    }
+  }
+}
