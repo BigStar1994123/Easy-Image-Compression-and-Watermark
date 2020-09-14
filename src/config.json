@@ -10,6 +10,7 @@
     }
   },
   "WaterMark": {
+    "Name": "",
     "Font": {
       "HeightSizePercentage": 0.025,
       "HeightPositionPercentage": 0.97,

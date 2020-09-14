@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace ImageCompression
+namespace ImageCompression.SelectDialog
 {
     public class Select : ISelect
     {
@@ -14,7 +14,7 @@ namespace ImageCompression
         public string InitialFolder { get; set; }
 
         /// <summary>
-        /// Gets/sets directory in which dialog will be open 
+        /// Gets/sets directory in which dialog will be open
         /// if there is no recent directory available.
         /// </summary>
         public string DefaultFolder { get; set; }
@@ -23,10 +23,12 @@ namespace ImageCompression
         /// Gets selected folder.
         /// </summary>
         public string Folder { get; set; }
+
         public DialogResult ShowDialog()
         {
             return ShowDialog(owner: new WindowWrapper(IntPtr.Zero));
         }
+
         public DialogResult ShowDialog(IWin32Window owner)
         {
             if (Environment.OSVersion.Version.Major >= 6)
@@ -38,6 +40,7 @@ namespace ImageCompression
                 return ShowLegacyDialog(owner);
             }
         }
+
         public DialogResult ShowVistaDialog(IWin32Window owner)
         {
             var frm = (NativeMethods.IFileDialog)(new NativeMethods.FileOpenDialogRCW());
@@ -98,6 +101,7 @@ namespace ImageCompression
             }
             return DialogResult.Cancel;
         }
+
         public DialogResult ShowLegacyDialog(IWin32Window owner)
         {
             using (var frm = new SaveFileDialog())
@@ -122,8 +126,12 @@ namespace ImageCompression
                 }
             }
         }
-        public void Dispose() { } //just to have possibility of Using statement.
+
+        public void Dispose()
+        {
+        } //just to have possibility of Using statement.
     }
+
     public class WindowWrapper : System.Windows.Forms.IWin32Window
     {
         /// <summary>
@@ -145,6 +153,7 @@ namespace ImageCompression
 
         private IntPtr _hwnd;
     }
+
     internal static class NativeMethods
     {
         #region Constants
@@ -159,7 +168,7 @@ namespace ImageCompression
 
         public const uint SIGDN_FILESYSPATH = 0x80058000;
 
-        #endregion
+        #endregion Constants
 
         #region COM
 
@@ -175,7 +184,7 @@ namespace ImageCompression
             [MethodImpl(MethodImplOptions.InternalCall,
              MethodCodeType = MethodCodeType.Runtime)]
             [PreserveSig()]
-            uint Show([In, Optional] IntPtr hwndOwner); //IModalWindow 
+            uint Show([In, Optional] IntPtr hwndOwner); //IModalWindow
 
             [MethodImpl(MethodImplOptions.InternalCall,
              MethodCodeType = MethodCodeType.Runtime)]
@@ -302,7 +311,7 @@ namespace ImageCompression
                          [In] uint hint, out int piOrder);
         }
 
-        #endregion
+        #endregion COM
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern int SHCreateItemFromParsingName

@@ -46,6 +46,7 @@
 
     public class WaterMark
     {
+        public string Name { get; set; }
         public MyFont Font { get; set; }
         public MyColor Color { get; set; }
 

@@ -1,42 +1,37 @@
-﻿using System;
+﻿using ImageCompression.Helpers;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text.Json;
 
 namespace ImageCompression
 {
     public class Program
     {
-        private static readonly string GeekyTripName = "Geekytrip";
         private static Config _config;
 
         private static void Main(string[] args)
         {
-            Console.WriteLine("大星的圖片壓縮程式==!!");
-            var jsonString = File.ReadAllText("config.json");
-            _config = JsonSerializer.Deserialize<Config>(jsonString);
-            Console.WriteLine(_config);
+            Console.WriteLine("C# Image Comression & Easy Watermark.");
 
-            Console.Write("請先選擇圖片所在的 Folder: ");
+            _config = ConfigHelper.ReadConfigFile();
 
-            var select = new Select
-            {
-                InitialFolder = "C:\\"
-            };
-            select.ShowDialog();
-            Console.WriteLine($"{select.Folder}");
+            Console.Write("Please Choose Image's Folder: ");
 
-            var filePaths = Directory.GetFiles(select.Folder, "*");
-            Console.WriteLine("列出所有檔案: ");
+            var selectFolder = SelectDialogHelper.SelectFolder();
+            var filePaths = Directory.GetFiles(selectFolder, "*");
+
+            Console.WriteLine("List All Files: ");
+
             foreach (var filepath in filePaths)
             {
                 Console.WriteLine(filepath);
             }
+
             Console.WriteLine("--------------------------------");
 
-            var imageFolder = select.Folder;
+            var imageFolder = selectFolder;
             var targetFolder = imageFolder + "/CompressionAndWatermark";
             Directory.CreateDirectory(targetFolder);
 
@@ -44,7 +39,7 @@ namespace ImageCompression
             {
                 try
                 {
-                    Console.WriteLine($"{filePath} 處理中...");
+                    Console.WriteLine($"{filePath} Processing...");
 
                     var fileName = Path.GetFileName(filePath);
                     var bmp = new Bitmap(filePath);
@@ -79,7 +74,7 @@ namespace ImageCompression
                 }
             }
 
-            Console.WriteLine("大星的圖片壓縮程式跑完了88");
+            Console.WriteLine("Finish.");
         }
 
         private static ImageCodecInfo GetEncoder(ImageFormat format)
@@ -150,7 +145,7 @@ namespace ImageCompression
                 LineAlignment = StringAlignment.Center
             };
 
-            graphic.DrawString(GeekyTripName, font, new SolidBrush(color),
+            graphic.DrawString(_config.WaterMark.Name, font, new SolidBrush(color),
                 new Point(
                     (int)(bmp.Width * _config.WaterMark.Font.WidthPositionPercentage),
                     (int)(bmp.Height * _config.WaterMark.Font.HeightPositionPercentage)),
